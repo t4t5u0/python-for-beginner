@@ -1,0 +1,6 @@
+jupyterlab
+# jupyter-console
+# jupyterlab_widgets
+# ipywidgets
+# numpy
+# matplotlib
