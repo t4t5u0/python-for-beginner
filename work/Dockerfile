@@ -2,11 +2,14 @@ FROM python:latest
 USER root
 
 
-RUN apt-get update
-RUN apt-get -y install vim
+RUN apt-get update && apt-get -y install vim
 # RUN apt-get -y install language-pack-ja
 # RUN apt-get -y install locale && \
-#     localedef -f UTF-8 -i _JP ja_JP.UTF-8
+#     localedef -f UTF-8 -i ja_JP ja_JP.UTF-8
+RUN apt-get update \
+    && apt-get install -y locales \
+    && locale-gen ja_JP.UTF-8 \
+    && echo "export LANG=ja_JP.UTF-8" >> ~/.bashrc
 ENV LANG ja_JP.UTF-8
 ENV LANGUAGE ja_JP:ja
 ENV LC_ALL ja_JP.UTF-8
@@ -20,7 +23,7 @@ ADD . /root/work
 
 RUN pip install -r requirements.txt
 
-RUN echo y | jupyter lab --generate-config /root/
+RUN yes | jupyter lab --generate-config /root/
 # RUN ls /root/.jupyter
 RUN sed -i \ 
     -e '2ic = get_config()' \
