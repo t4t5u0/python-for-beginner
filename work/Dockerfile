@@ -1,11 +1,16 @@
 FROM python:latest
-USER root
+# USER root
+
+ARG USER=fuga
+ARG PASSWD=pass
+
+
+RUN useradd -m ${USER}
+RUN gpasswd -a ${USER} sudo
+RUN echo "${USER}:${PASSWD}" | chpasswd
 
 
 RUN apt-get update && apt-get -y install vim
-# RUN apt-get -y install language-pack-ja
-# RUN apt-get -y install locale && \
-#     localedef -f UTF-8 -i ja_JP ja_JP.UTF-8
 RUN apt-get update \
     && apt-get install -y locales \
     && locale-gen ja_JP.UTF-8 \
@@ -14,16 +19,17 @@ ENV LANG ja_JP.UTF-8
 ENV LANGUAGE ja_JP:ja
 ENV LC_ALL ja_JP.UTF-8
 ENV TZ JST-9
-# RUN echo | pwd
 
-RUN mkdir /root/work
-WORKDIR /root/work
+ENV HOME=/home/${USER}
 
-ADD . /root/work
+RUN mkdir $HOME/work
+WORKDIR $HOEM/work
 
-RUN pip install -r requirements.txt
+ADD . $HOME/work
 
-RUN yes | jupyter lab --generate-config /root/
+RUN pip install --user -r requirements.txt
+
+RUN yes | jupyter lab --generate-config 
 # RUN ls /root/.jupyter
 RUN sed -i \ 
     -e '2ic = get_config()' \
@@ -31,6 +37,8 @@ RUN sed -i \
     -e 's/^# \(c.ServerApp.open_browser = False\)/\1/' \
     -e 's/^# \(c.ServerApp.port = 8888\)/\1/' \
     -e "s/^# \(c.ServerApp.token = \).*/\1u''/" \ 
-    /root/.jupyter/jupyter_lab_config.py
+    $HOME/.jupyter/jupyter_lab_config.py
 
 EXPOSE 8888
+
+USER ${USER}

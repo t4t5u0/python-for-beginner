@@ -4,13 +4,19 @@ services:
   jupyterlab:
     container_name: jupyterlab
     restart: always
-    build: ./work
-    user: root
-    # working_dir: '/work'
+    environment:
+      USER: hoge
+      PASSWD: passowrd
+    build:
+      context:
+        ./work
+      args:
+        USER: "hoge"
+        PASSWD: "hoge"
+    # user: root
     tty: true
-    # ports:
-    #   - "127.0.0.1:8888:8888"
+
     network_mode: "host"
     volumes:
-      - "./work:/root/work"
-    command: jupyter-lab --allow-root --no-browser
+      - "./work:/home/${USER}/work"
+    command: jupyter-lab --no-browser
