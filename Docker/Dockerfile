@@ -1,6 +1,7 @@
 FROM python:latest
 # USER root
 
+# このUSERとPASSWDは上書きされる
 ARG USER=fuga
 ARG PASSWD=pass
 
@@ -8,7 +9,6 @@ ARG PASSWD=pass
 RUN useradd -m ${USER}
 RUN gpasswd -a ${USER} sudo
 RUN echo "${USER}:${PASSWD}" | chpasswd
-
 
 RUN apt-get update && apt-get -y install vim
 RUN apt-get update \
@@ -22,12 +22,12 @@ ENV TZ JST-9
 
 ENV HOME=/home/${USER}
 
-RUN mkdir $HOME/work
-WORKDIR $HOEM/work
+# RUN mkdir ${HOME}/work
+WORKDIR ${HOME}/work
 
 # USER ${USER}
 
-COPY python-for-beginner/work/requirements.txt $HOME/work/
+COPY python-for-beginner/work/requirements.txt ${HOME}/work/
 RUN pip install -r ${HOME}/work/requirements.txt
 COPY python-for-beginner/work ${HOME}/work/
 
@@ -38,8 +38,10 @@ RUN sed -i \
     -e 's/^# \(c.ServerApp.open_browser = False\)/\1/' \
     -e 's/^# \(c.ServerApp.port = 8888\)/\1/' \
     -e "s/^# \(c.ServerApp.token = \).*/\1u''/" \ 
-    $HOME/.jupyter/jupyter_lab_config.py
+    ${HOME}/.jupyter/jupyter_lab_config.py
 
 EXPOSE 8888
 
+RUN echo ${USER}
+RUN chown -R ${USER}:${USER} ${HOME}
 USER ${USER}

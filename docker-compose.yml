@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       USER: hoge
-      PASSWD: passowrd
+      PASSWD: password
     build:
       context: ../
       dockerfile: python-for-beginner/Docker/Dockerfile
