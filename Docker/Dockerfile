@@ -25,12 +25,13 @@ ENV HOME=/home/${USER}
 RUN mkdir $HOME/work
 WORKDIR $HOEM/work
 
-ADD . $HOME/work
+# USER ${USER}
 
-RUN pip install --user -r requirements.txt
+COPY python-for-beginner/work/requirements.txt $HOME/work/
+RUN pip install -r ${HOME}/work/requirements.txt
+COPY python-for-beginner/work ${HOME}/work/
 
 RUN yes | jupyter lab --generate-config 
-# RUN ls /root/.jupyter
 RUN sed -i \ 
     -e '2ic = get_config()' \
     -e "s/^# \(c.ServerApp.ip = '127.0.0.1'\)/\1/" \

@@ -8,8 +8,8 @@ services:
       USER: hoge
       PASSWD: passowrd
     build:
-      context:
-        ./work
+      context: ../
+      dockerfile: python-for-beginner/Docker/Dockerfile
       args:
         USER: "hoge"
         PASSWD: "hoge"
