@@ -1,5 +1,10 @@
 version: "3"
 
+volumes:
+  work:
+    external: 
+      name: work
+
 services:
   jupyterlab:
     container_name: jupyterlab
@@ -18,5 +23,6 @@ services:
 
     network_mode: "host"
     volumes:
-      - "./work:/home/${USER}/work"
+      # - ./work:/home/${USER}/work
+      - "work:/home/${USER}/work"
     command: jupyter-lab --no-browser

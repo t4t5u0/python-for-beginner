@@ -1,10 +1,12 @@
 FROM python:latest
+LABEL maintainer="https://github.com/t4t5u0"
+
 # USER root
 
 # このUSERとPASSWDは上書きされる
 ARG USER=fuga
 ARG PASSWD=pass
-
+ENV HOME=/home/${USER}
 
 RUN useradd -m ${USER}
 RUN gpasswd -a ${USER} sudo
@@ -15,12 +17,15 @@ RUN apt-get update \
     && apt-get install -y locales \
     && locale-gen ja_JP.UTF-8 \
     && echo "export LANG=ja_JP.UTF-8" >> ~/.bashrc
+
+RUN curl -fsSL https://deb.nodesource.com/setup_15.x | bash -
+RUN apt-get install -y nodejs
+
 ENV LANG ja_JP.UTF-8
 ENV LANGUAGE ja_JP:ja
 ENV LC_ALL ja_JP.UTF-8
 ENV TZ JST-9
-
-ENV HOME=/home/${USER}
+# ENV HOME=/home/${USER}
 
 # RUN mkdir ${HOME}/work
 WORKDIR ${HOME}/work
