@@ -1,1 +1,1 @@
-docker volume create --name=work
+docker volume create --name=src

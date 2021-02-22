@@ -20,6 +20,13 @@ RUN apt-get update \
 
 RUN curl -fsSL https://deb.nodesource.com/setup_15.x | bash -
 RUN apt-get install -y nodejs
+
+RUN curl -L -O https://github.com/miiton/Cica/releases/download/v5.0.2/Cica_v5.0.2_with_emoji.zip \
+    && unzip Cica_v5.0.2_with_emoji.zip \
+    && mkdir /usr/share/fonts/truetype/cica \
+    && cp *.ttf /usr/share/fonts/truetype/cica/
+    # 後始末はしてない
+
 RUN fc-cache -fv
 
 ENV LANG ja_JP.UTF-8
@@ -29,13 +36,14 @@ ENV TZ JST-9
 # ENV HOME=/home/${USER}
 
 # RUN mkdir ${HOME}/work
-WORKDIR ${HOME}/work
+WORKDIR ${HOME}/src
 
 # USER ${USER}
 
-COPY python-for-beginner/work/requirements.txt ${HOME}/work/
-RUN pip install -r ${HOME}/work/requirements.txt
-COPY python-for-beginner/work ${HOME}/work/
+COPY python-for-beginner/config/requirements.txt ${HOME}/config/
+RUN pip install -r ${HOME}/config/requirements.txt
+COPY python-for-beginner/config ${HOME}/config/
+COPY python-for-beginner/src ${HOME}/src/
 
 RUN yes | jupyter lab --generate-config 
 RUN sed -i \ 
@@ -45,6 +53,8 @@ RUN sed -i \
     -e 's/^# \(c.ServerApp.port = 8888\)/\1/' \
     -e "s/^# \(c.ServerApp.token = \).*/\1u''/" \ 
     ${HOME}/.jupyter/jupyter_lab_config.py
+
+COPY python-for-beginner/config/custom.css ${HOME}/.jupyter/custom/
 
 EXPOSE 8888
 

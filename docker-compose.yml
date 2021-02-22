@@ -1,9 +1,9 @@
 version: "3"
 
 volumes:
-  work:
+  src:
     external: 
-      name: work
+      name: src
 
 services:
   jupyterlab:
@@ -23,6 +23,5 @@ services:
 
     network_mode: "host"
     volumes:
-      # - ./work:/home/${USER}/work
-      - "work:/home/${USER}/work"
+      - "src:/home/${USER}/src"
     command: jupyter-lab --no-browser
