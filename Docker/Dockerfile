@@ -12,7 +12,7 @@ RUN useradd -m ${USER}
 RUN gpasswd -a ${USER} sudo
 RUN echo "${USER}:${PASSWD}" | chpasswd
 
-RUN apt-get update && apt-get -y install vim
+RUN apt-get update && apt-get -y install vim fonts-ipafont
 RUN apt-get update \
     && apt-get install -y locales \
     && locale-gen ja_JP.UTF-8 \
@@ -20,6 +20,7 @@ RUN apt-get update \
 
 RUN curl -fsSL https://deb.nodesource.com/setup_15.x | bash -
 RUN apt-get install -y nodejs
+RUN fc-cache -fv
 
 ENV LANG ja_JP.UTF-8
 ENV LANGUAGE ja_JP:ja
@@ -47,6 +48,6 @@ RUN sed -i \
 
 EXPOSE 8888
 
-RUN echo ${USER}
+# RUN echo ${USER}
 RUN chown -R ${USER}:${USER} ${HOME}
 USER ${USER}

@@ -4,3 +4,4 @@ jupyterlab_widgets
 ipywidgets
 numpy
 matplotlib
+japanize-matplotlib
