@@ -60,3 +60,31 @@
 |      | ☆☆☆    | \_\_iter__  と\_\_next__       |
 |      | ☆☆☆    |                                |
 |      | ☆☆☆    |                                |
+
+|   X   |   Y   | X and Y |
+| :---: | :---: | :-----: |
+| False | False |  False  |
+| False | True  |  False  |
+| True  | False |  False  |
+| True  | True  |  True   |
+
+|   X   |   Y   | X or Y |
+| :---: | :---: | :----: |
+| False | False | False  |
+| False | True  |  True  |
+| True  | False |  True  |
+| True  | True  |  True  |
+
+|   X   | not X |
+| :---: | :---: |
+| False | True  |
+| True  | False |
+
+| 演算子 |  名前  |
+| :----: | :----: |
+|   ==   |  等価  |
+|   !=   | 非等価 |
+|   <    |  超過  |
+|   <=   |  以上  |
+|   >    |  未満  |
+|   >=   |  以下  |
